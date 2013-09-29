@@ -144,18 +144,11 @@ public class Util {
 		
 		setToAdd = new HashSet<ProductPrice>() ;
 		listToRemove = new LinkedList<ProductPrice>() ; ;
-		
-		System.out.println("db:"+ currentList +"<db>");
+
 		searchElementsToRemoveAndAdd(currentList, newPrice, setToAdd, listToRemove) ;
 		
-//		System.out.println(currentList);
-		System.out.println("remove:"+ listToRemove);
-		System.out.println("add:"+ setToAdd);
-		System.out.println("newPrice:"+ newPrice);
 		currentList.removeAll(listToRemove) ;
 		currentList.addAll(setToAdd) ;
-//		System.out.println(currentList);
-		
 	}
 	
 	private static void searchElementsToRemoveAndAdd(List<ProductPrice> currentList, ProductPrice newPrice , Set<ProductPrice> setToAdd , List<ProductPrice> listToRemove  ){
@@ -168,7 +161,6 @@ public class Util {
 				//   /----x----/			db price
 				//      /----y----/			new price
 				if(dbPrice.start.before(newPrice.start) && dbPrice.end.before(newPrice.end)){
-//System.out.println("iter:\t"+ newPrice +"\tdb:"+ dbPrice );
 					Date beforeStart = (Date) dbPrice.start.clone() ;
 					Date beforeEnd  = new Date(newPrice.start.getTime() - 1000) ;
 					
@@ -180,7 +172,6 @@ public class Util {
 				//       /----x----/    	db price
 				//    /---y----/			new price
 				if( dbPrice.start.after(newPrice.start) && dbPrice.end.after(newPrice.end) ){
-//System.out.println("iter:\t"+ newPrice +"\tdb:"+ dbPrice );					
 					Date afterStart = (Date) new Date(newPrice.end.getTime() +1000) ;
 					Date afterEnd  = (Date) dbPrice.end.clone() ;
 					
@@ -192,7 +183,6 @@ public class Util {
 				//    /-----x--------/		db price
 				//	   /----y----/    	    new price
 				if(dbPrice.start.before(newPrice.start) && dbPrice.end.after(newPrice.end) ){
-//System.out.println("iter:\t"+ newPrice +"\tdb:"+ dbPrice );					
 					ProductPrice before = new ProductPrice(dbPrice, dbPrice.start, new Date(newPrice.start.getTime() - 1000)) ;
 					ProductPrice after = new ProductPrice(dbPrice, new Date(newPrice.end.getTime()+1000), dbPrice.end) ; 
 					
@@ -207,13 +197,11 @@ public class Util {
 				//   /----x----/			db price
 				//      /----x----/			new price
 				if(dbPrice.start.before(newPrice.start) && dbPrice.end.before(newPrice.end)){
-//System.out.println("iter:\t"+ newPrice +"\tdb:"+ dbPrice );					
 					dbPrice.end = newPrice.end ;
 				}
 				//       /---x-----/    	db price
 				//    /---x----/			new price
 				if( dbPrice.start.after(newPrice.start) && dbPrice.end.before(newPrice.end) ){
-//System.out.println("iter:\t"+ newPrice +"\tdb:"+ dbPrice );					
 					dbPrice.start = newPrice.start ;
 				}
 			}
