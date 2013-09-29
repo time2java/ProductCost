@@ -15,9 +15,12 @@ public class Util {
 		
 		testArguments(pricesFromDB,newPrices);
 		
-		List<ProductPrice> result = new LinkedList<>() ;
+		//fast return
+		if(newPrices.size() == 0){
+			return pricesFromDB;
+		}
 		
-		//create db prices
+		//convert Collection to Map structure for easy data  manipulation
 		Map <String, Map <Integer, Map <Integer, List<ProductPrice>>>> DbMap = generateTree(pricesFromDB) ;
 		
 		//sort db prices by date start
@@ -26,10 +29,8 @@ public class Util {
 		}
 	
 		//merge new prices
-		result = prepeareAndUpdateIfNeed( DbMap , newPrices)  ;
-	
-		
-		return result ;
+		prepeareAndUpdateIfNeed( DbMap , newPrices)  ;
+		return  convertMapToList(DbMap) ;
 	}
 	
 	private static void testArguments(Collection<ProductPrice> pricesFromDB, Collection<ProductPrice> newPrices) {
@@ -102,14 +103,17 @@ public class Util {
 		});
 	}
 
-	private static List<ProductPrice> prepeareAndUpdateIfNeed( Map<String, Map<Integer, Map<Integer, List<ProductPrice>>>> dbMap, Collection<ProductPrice> newPrices) {
+	private static void prepeareAndUpdateIfNeed( Map<String, Map<Integer, Map<Integer, List<ProductPrice>>>> dbMap, Collection<ProductPrice> newPrices) {
 		
 		for(ProductPrice iter : newPrices ){
 			List<ProductPrice> currentList = getProductByNumberDepartProductCode(dbMap, iter) ;
 			updateIfNeed(currentList,iter) ;
 		}
 
-		//Map -> List
+//		return convertMapToList(dbMap) ;
+	}
+	private static List<ProductPrice> convertMapToList(Map<String, Map<Integer, Map<Integer, List<ProductPrice>>>> dbMap){
+		//map  -> List
 		List <ProductPrice> result = new LinkedList<>() ;
 		for(String firstIter : dbMap.keySet()){
 			for( Integer secondIter : dbMap.get(firstIter).keySet() ){
