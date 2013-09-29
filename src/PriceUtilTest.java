@@ -128,12 +128,12 @@ public class PriceUtilTest {
 		//	    /--x--//--y--/	 	new	
 		
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 100 )) ;
-		dbPrices.add(new ProductPrice( 1 , "2" , 1 , 1 ,new Date((long)(5.1*KK)) , new Date(7*KK) , 200 )) ;
-		dbPrices.add(new ProductPrice( 1 , "3" , 1 , 1 ,new Date((long)(7.1*KK)) , new Date(9*KK) , 300 )) ;
-		dbPrices.add(new ProductPrice( 666 , "666" , 1 , 1 ,new Date((long)(77*KK)) , new Date(99*KK) , 666 )) ;
+		dbPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date((long)(5.1*KK)) , new Date(7*KK) , 200 )) ;
+		dbPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date((long)(7.1*KK)) , new Date(9*KK) , 300 )) ;
+//		dbPrices.add(new ProductPrice( 666 , "1" , 1 , 1 ,new Date((long)(77*KK)) , new Date(99*KK) , 666 )) ;
 		
-		newPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(2*KK) , new Date(6*KK) , 100 )) ;
-		newPrices.add(new ProductPrice( 1 , "4" , 1 , 1 ,new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
+		newPrices.add(new ProductPrice( 10 , "1" , 1 , 1 ,new Date(2*KK) , new Date(6*KK) , 100 )) ;
+//		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 , new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
 		
 		result = Util.updateProductPrices(dbPrices, newPrices) ;
 	
@@ -154,6 +154,21 @@ public class PriceUtilTest {
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(8*KK))) ;
 		
 		assertEquals( 2 , result.size()) ;
+	}
+	
+	@Test
+	public void testAdd(){
+		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 400 )) ;
+		dbPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date(6*KK) , new Date(9*KK) , 500 )) ;
+		dbPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date(10*KK) , new Date(12*KK) , 900 )) ;
+		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 ,new Date(4*KK) , new Date(8*KK) , 200 )) ;
+
+		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		
+		assertEquals(400, searchProductCostByDate(result, "1", 1, 1, new Date(2*KK))) ;
+		assertEquals(900, searchProductCostByDate(result, "1", 1, 1, new Date(11*KK))) ;
+		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(5*KK))) ;
+		assertEquals(-1, searchProductCostByDate(result, "1", 1, 1, new Date(20*KK))) ;
 	}
 	
 	@Test

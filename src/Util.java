@@ -142,20 +142,27 @@ public class Util {
 			return ;
 		}
 
-	
 		Set<ProductPrice> setToAdd ;
-		List<ProductPrice> listToRemove ;
+		Set<ProductPrice> setToRemove ;
 		
 		setToAdd = new HashSet<ProductPrice>() ;
-		listToRemove = new LinkedList<ProductPrice>() ; ;
+		setToRemove = new HashSet<ProductPrice>() ; ;
 
-		searchElementsToRemoveAndAdd(currentList, newPrice, setToAdd, listToRemove) ;
+		searchElementsToRemoveAndAdd(currentList, newPrice, setToAdd, setToRemove) ;
 		
-		currentList.removeAll(listToRemove) ;
+		currentList.removeAll(setToRemove) ;
 		currentList.addAll(setToAdd) ;
+		sortPricesList(currentList);
 	}
 	
-	private static void searchElementsToRemoveAndAdd(List<ProductPrice> currentList, ProductPrice newPrice , Set<ProductPrice> setToAdd , List<ProductPrice> listToRemove  ){
+	private static boolean  canEasyAdd( List<ProductPrice> currentList, ProductPrice iter) {
+		//test conditional
+		//        /----/ /----/ /-----/ /-----/             <---- prices from db
+		// /---/								 /---/		<---- prices to add
+		return currentList.get(0).start.after(iter.end) || currentList.get(currentList.size()-1).end.before(iter.start) ; 
+	}
+	
+	private static void searchElementsToRemoveAndAdd(List<ProductPrice> currentList, ProductPrice newPrice , Set<ProductPrice> setToAdd , Set<ProductPrice> setToRemove  ){
 		
 		for(int i = 0 ; i < currentList.size() ; i ++){
 			ProductPrice dbPrice = currentList.get(i) ;
@@ -195,7 +202,7 @@ public class Util {
 					setToAdd.add(after) ;
 				}
 				
-				listToRemove.add(dbPrice) ;
+				setToRemove.add(dbPrice) ;
 				setToAdd.add(newPrice) ;
 			}else{
 				//   /----x----/			db price
@@ -212,10 +219,5 @@ public class Util {
 		}
 	}
 	
-	private static boolean  canEasyAdd( List<ProductPrice> currentList, ProductPrice iter) {
-		//test conditional
-		//        /----/ /----/ /-----/ /-----/             <---- prices from db
-		// /---/								 /---/		<---- prices to add
-		return currentList.get(0).start.after(iter.end) || currentList.get(currentList.size()-1).end.before(iter.start) ; 
-	}
+	
 }
