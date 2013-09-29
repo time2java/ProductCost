@@ -26,7 +26,6 @@ public class PriceUtilTest {
 	
 		Collection<ProductPrice> result = Util.updateProductPrices(dbPrice, newPrices) ;
 		
-		
 		assertEquals(searchProductCostByDate(result, "122856" , 1, 1, new Date(150000)) , 100);
 		assertEquals(searchProductCostByDate(result, "122856" , 1, 1, new Date(350000)) , 200);
 		assertEquals(searchProductCostByDate(result, "122856" , 1, 1, new Date(550000)) , 200);
@@ -103,7 +102,6 @@ public class PriceUtilTest {
 		newPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date(4*KK) , new Date(8*KK) , 200 )) ;
 
 		result = Util.updateProductPrices(dbPrices, newPrices) ;
-		System.out.println(result);
 		
 		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date(1*KK))) ;
 		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date((long)(3.9*KK)))) ;
@@ -121,7 +119,6 @@ public class PriceUtilTest {
 		assertEquals( 3 , result.size()) ;
 	}
 	
-//	@Test(timeout=1000)
 	@Test
 	public void testD(){
 		//	 /--x--//--y--//--z--/	db
@@ -130,15 +127,14 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 100 )) ;
 		dbPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date((long)(5.1*KK)) , new Date(7*KK) , 200 )) ;
 		dbPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date((long)(7.1*KK)) , new Date(9*KK) , 300 )) ;
-//		dbPrices.add(new ProductPrice( 666 , "1" , 1 , 1 ,new Date((long)(77*KK)) , new Date(99*KK) , 666 )) ;
+		dbPrices.add(new ProductPrice( 666 , "1" , 1 , 1 ,new Date((long)(77*KK)) , new Date(99*KK) , 666 )) ;
 		
 		newPrices.add(new ProductPrice( 10 , "1" , 1 , 1 ,new Date(2*KK) , new Date(6*KK) , 100 )) ;
 //		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 , new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
 		
 		result = Util.updateProductPrices(dbPrices, newPrices) ;
 	
-		System.out.println(result);
-		assertEquals( 3 , result.size()) ;
+		assertEquals( 4 , result.size()) ;
 	}
 	
 		//	 /--x--/			db
@@ -165,10 +161,13 @@ public class PriceUtilTest {
 
 		result = Util.updateProductPrices(dbPrices, newPrices) ;
 		
+		assertEquals( 4 , result.size()) ;
 		assertEquals(400, searchProductCostByDate(result, "1", 1, 1, new Date(2*KK))) ;
 		assertEquals(900, searchProductCostByDate(result, "1", 1, 1, new Date(11*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(5*KK))) ;
 		assertEquals(-1, searchProductCostByDate(result, "1", 1, 1, new Date(20*KK))) ;
+		
+		
 	}
 	
 	@Test
@@ -178,7 +177,6 @@ public class PriceUtilTest {
 
 		result = Util.updateProductPrices(dbPrices, newPrices) ;
 		
-		System.out.println("res"+ result);
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(2*KK))) ;
 		assertEquals( -1, searchProductCostByDate(result, "1", 1, 1, new Date(8*KK))) ;
 		
@@ -203,7 +201,7 @@ public class PriceUtilTest {
 				returnValue =  iter.value ;
 			}
 		}
-//		System.out.println(date.getTime() +"\t:"+ returnValue) ;
+
 		return returnValue ;
 	}
 }

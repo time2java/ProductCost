@@ -171,7 +171,7 @@ public class Util {
 				
 				//   /----x----/			db price
 				//      /----y----/			new price
-				if(dbPrice.start.before(newPrice.start) && dbPrice.end.before(newPrice.end)){
+				if(dbPrice.start.before(newPrice.start) && dbPrice.end.before(newPrice.end) && dbPrice.end.after(newPrice.start)){
 					Date beforeStart = (Date) dbPrice.start.clone() ;
 					Date beforeEnd  = new Date(newPrice.start.getTime() - 1000) ;
 					
@@ -179,10 +179,12 @@ public class Util {
 					
 					setToAdd.add(before) ;
 					setToAdd.add(newPrice) ;
+					
+					setToRemove.add(dbPrice) ;
 				}else
 				//       /----x----/    	db price
 				//    /---y----/			new price
-				if( dbPrice.start.after(newPrice.start) && dbPrice.end.after(newPrice.end) ){
+				if( dbPrice.start.after(newPrice.start) && dbPrice.end.after(newPrice.end) && dbPrice.start.before(newPrice.end) ){
 					Date afterStart = (Date) new Date(newPrice.end.getTime() +1000) ;
 					Date afterEnd  = (Date) dbPrice.end.clone() ;
 					
@@ -190,6 +192,8 @@ public class Util {
 					
 					setToAdd.add(after) ;
 					setToAdd.add(newPrice) ;
+					
+					setToRemove.add(dbPrice) ;
 				}else
 				//    /-----x--------/		db price
 				//	   /----y----/    	    new price
@@ -200,21 +204,31 @@ public class Util {
 					setToAdd.add(before) ;
 					setToAdd.add(newPrice) ;
 					setToAdd.add(after) ;
+					
+					setToRemove.add(dbPrice) ;
+				}else
+				//      /---x----/		db price
+				//	    /---y----/    	    new price
+				if(dbPrice.start.getTime() == newPrice.start.getTime() && dbPrice.end.getTime() == newPrice.end.getTime() ){
+					setToAdd.add(newPrice) ;
+					setToRemove.add(dbPrice) ;
 				}
 				
-				setToRemove.add(dbPrice) ;
 				setToAdd.add(newPrice) ;
 			}else{
 				//   /----x----/			db price
 				//      /----x----/			new price
 				if(dbPrice.start.before(newPrice.start) && dbPrice.end.before(newPrice.end)){
-					dbPrice.end = newPrice.end ;
+					newPrice.start = dbPrice.start ;
 				}
 				//       /---x-----/    	db price
 				//    /---x----/			new price
 				if( dbPrice.start.after(newPrice.start) && dbPrice.end.before(newPrice.end) ){
-					dbPrice.start = newPrice.start ;
+					newPrice.end = dbPrice.end ;
 				}
+				setToRemove.add(dbPrice) ;
+				setToAdd.add(newPrice) ;
+
 			}
 		}
 	}
