@@ -1,3 +1,5 @@
+package org.time2java.ProductPrices;
+
 import static org.junit.Assert.*;
 
 import java.util.Collection;
@@ -9,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class PriceUtilTest {
+public class PriceMergeUtilTests {
 	
 	@Test(timeout=1000)
 	public void testBrute(){
@@ -24,7 +26,7 @@ public class PriceUtilTest {
 		newPrices.add(new ProductPrice( 125, "122856", 2, 1, new Date(100000), new Date(250000), 100));
 		newPrices.add(new ProductPrice( 66674, "6654", 1, 1, new Date(200000), new Date(300000), 199));
 	
-		Collection<ProductPrice> result = Util.updateProductPrices(dbPrice, newPrices) ;
+		Collection<ProductPrice> result = PriceMergeUtil.updateProductPrices(dbPrice, newPrices) ;
 		
 		assertEquals(searchProductCostByDate(result, "122856" , 1, 1, new Date(150000)) , 100);
 		assertEquals(searchProductCostByDate(result, "122856" , 1, 1, new Date(350000)) , 200);
@@ -53,7 +55,7 @@ public class PriceUtilTest {
 	
 	@Test(timeout=1000)
 	public void testDeadLockOrRecursiveLock(){
-		Collection<ProductPrice> result = Util.updateProductPrices(dbPrices, newPrices) ;
+		Collection<ProductPrice> result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 	}
 	
 	@Test(timeout=1000)
@@ -63,7 +65,7 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date(3*KK) , new Date(7*KK) , 200 )) ;
 		
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		assertEquals(100, searchProductCostByDate(result, "1" , 1, 1, new Date(2*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(3*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(7*KK))) ;
@@ -79,7 +81,7 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(5*KK) , new Date(9*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(7*KK) , 200 )) ;
 		
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(1*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(6*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(7*KK))) ;
@@ -101,7 +103,7 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date((long)(5.1*KK)) , new Date(9*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date(4*KK) , new Date(8*KK) , 200 )) ;
 
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		
 		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date(1*KK))) ;
 		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date((long)(3.9*KK)))) ;
@@ -132,7 +134,7 @@ public class PriceUtilTest {
 		newPrices.add(new ProductPrice( 10 , "1" , 1 , 1 ,new Date(2*KK) , new Date(6*KK) , 100 )) ;
 //		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 , new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
 		
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 	
 		assertEquals( 4 , result.size()) ;
 	}
@@ -144,7 +146,7 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date(7*KK) , new Date(9*KK) , 200 )) ;
 
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		
 		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date(4*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(8*KK))) ;
@@ -159,15 +161,13 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 3 , "1" , 1 , 1 ,new Date(10*KK) , new Date(12*KK) , 900 )) ;
 		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 ,new Date(4*KK) , new Date(8*KK) , 200 )) ;
 
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		
 		assertEquals( 4 , result.size()) ;
 		assertEquals(400, searchProductCostByDate(result, "1", 1, 1, new Date(2*KK))) ;
 		assertEquals(900, searchProductCostByDate(result, "1", 1, 1, new Date(11*KK))) ;
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(5*KK))) ;
 		assertEquals(-1, searchProductCostByDate(result, "1", 1, 1, new Date(20*KK))) ;
-		
-		
 	}
 	
 	@Test
@@ -175,7 +175,7 @@ public class PriceUtilTest {
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(3*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date(1*KK) , new Date(3*KK) , 200 )) ;
 
-		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 		
 		assertEquals(200, searchProductCostByDate(result, "1", 1, 1, new Date(2*KK))) ;
 		assertEquals( -1, searchProductCostByDate(result, "1", 1, 1, new Date(8*KK))) ;
@@ -185,9 +185,9 @@ public class PriceUtilTest {
 	
 	@Test(expected=IllegalArgumentException.class,timeout=1000)
 	public void testWrongArguments() {
-			Util.updateProductPrices(null, null) ;
-			Util.updateProductPrices((List<ProductPrice>)new Object(), (List<ProductPrice>)new Object()) ;
-			Util.updateProductPrices((List<ProductPrice>)new Object(), null) ;
+		PriceMergeUtil.updateProductPrices(null, null) ;
+		PriceMergeUtil.updateProductPrices((List<ProductPrice>)new Object(), (List<ProductPrice>)new Object()) ;
+		PriceMergeUtil.updateProductPrices((List<ProductPrice>)new Object(), null) ;
 	}
 	
 	private long searchProductCostByDate(Collection<ProductPrice> productPrices  , String productCode , int number , int depart  , Date date ){

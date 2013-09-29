@@ -1,3 +1,5 @@
+package org.time2java.ProductPrices;
+
 import java.util.Date;
 
 public class ProductPrice implements Cloneable {

@@ -1,3 +1,5 @@
+package org.time2java.ProductPrices;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -10,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 
-public class Util {
+public class PriceMergeUtil {
 	public static Collection<ProductPrice> updateProductPrices(Collection<ProductPrice> pricesFromDB , Collection<ProductPrice> newPrices ){
 		
 		testArguments(pricesFromDB,newPrices);
