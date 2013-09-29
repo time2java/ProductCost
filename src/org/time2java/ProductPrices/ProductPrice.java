@@ -34,6 +34,6 @@ public class ProductPrice implements Cloneable {
 	
 	@Override
 	public String toString(){
-		return "\n"+ id+ ":"+ productCode +":"+ number +":"+ depart +":"+ start.getTime() +":"+ end.getTime() +":"+ value  ;
+		return id+ ":"+ productCode +":"+ number +":"+ depart +":"+ start.getTime() +":"+ end.getTime() +":"+ value  ;
 	}
 }

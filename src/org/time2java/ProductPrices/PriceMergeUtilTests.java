@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class PriceMergeUtilTests {
 	
-	@Test(timeout=1000)
+	@Test
 	public void testBrute(){
 		LinkedList<ProductPrice>  dbPrice = new LinkedList<ProductPrice> () ;
 		dbPrice.add(new ProductPrice( 122, "122856", 1, 1, new Date(100000), new Date(500000), 100));
@@ -58,7 +58,7 @@ public class PriceMergeUtilTests {
 		Collection<ProductPrice> result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
 	}
 	
-	@Test(timeout=1000)
+	@Test
 	public void testA(){
 		//	/----/	   		db
 		//	   /----/	 	new	
@@ -74,7 +74,7 @@ public class PriceMergeUtilTests {
 		assertEquals(2, result.size()) ;
 	}
 	
-	@Test(timeout=1000)
+	@Test
 	public void testB(){
 		//	       /----/	db
 		//	   /----/	 	new	
@@ -95,7 +95,7 @@ public class PriceMergeUtilTests {
 		assertEquals(2, result.size()) ;
 	}
 	
-	@Test(timeout=1000)
+	@Test
 	public void testC(){
 		//	 /-----//----/	db
 		//	     /----/	 	new	
@@ -132,16 +132,23 @@ public class PriceMergeUtilTests {
 		dbPrices.add(new ProductPrice( 666 , "1" , 1 , 1 ,new Date((long)(77*KK)) , new Date(99*KK) , 666 )) ;
 		
 		newPrices.add(new ProductPrice( 10 , "1" , 1 , 1 ,new Date(2*KK) , new Date(6*KK) , 100 )) ;
-//		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 , new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
+		newPrices.add(new ProductPrice( 4 , "1" , 1 , 1 , new Date((long)(6.1*KK)) , new Date(8*KK) , 500 )) ;
 		
 		result = PriceMergeUtil.updateProductPrices(dbPrices, newPrices) ;
-	
-		assertEquals( 4 , result.size()) ;
+		
+		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date((long)(2.1*KK))))  ;
+		assertEquals(100, searchProductCostByDate(result, "1", 1, 1, new Date((long)(5.5*KK))))  ;
+		assertEquals(500, searchProductCostByDate(result, "1", 1, 1, new Date(7*KK))) ;
+		assertEquals(500, searchProductCostByDate(result, "1", 1, 1, new Date(8*KK))) ;
+		assertEquals(300, searchProductCostByDate(result, "1", 1, 1, new Date((long)(8.5*KK))))  ;
+		assertEquals(666, searchProductCostByDate(result, "1", 1, 1, new Date(88*KK+1))) ;
+		
+		assertEquals( 5 , result.size()) ;
 	}
 	
 		//	 /--x--/			db
 		//	    	/--y--/	 	new	
-	@Test(timeout=1000)
+	@Test
 	public void testSimpleUpdate(){
 		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(5*KK) , 100 )) ;
 		newPrices.add(new ProductPrice( 2 , "1" , 1 , 1 ,new Date(7*KK) , new Date(9*KK) , 200 )) ;

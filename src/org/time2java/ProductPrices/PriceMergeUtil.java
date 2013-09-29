@@ -112,7 +112,6 @@ public class PriceMergeUtil {
 			updateIfNeed(currentList,iter) ;
 		}
 
-//		return convertMapToList(dbMap) ;
 	}
 	private static List<ProductPrice> convertMapToList(Map<String, Map<Integer, Map<Integer, List<ProductPrice>>>> dbMap){
 		//map  -> List
@@ -234,6 +233,4 @@ public class PriceMergeUtil {
 			}
 		}
 	}
-	
-	
 }
