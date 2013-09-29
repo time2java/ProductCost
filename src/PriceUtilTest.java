@@ -158,6 +158,20 @@ public class PriceUtilTest {
 		assertEquals( 2 , result.size()) ;
 	}
 	
+	@Test
+	public void testSimpleUpdate2(){
+		dbPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(3*KK) , 100 )) ;
+		newPrices.add(new ProductPrice( 1 , "1" , 1 , 1 ,new Date(1*KK) , new Date(3*KK) , 200 )) ;
+
+		result = Util.updateProductPrices(dbPrices, newPrices) ;
+		
+		System.out.println("res"+ result);
+		assertEquals(200, searchProductCostByDate(result, 1, 1, 1, new Date(2*KK))) ;
+		assertEquals( -1, searchProductCostByDate(result, 1, 1, 1, new Date(8*KK))) ;
+		
+		assertEquals( 1 , result.size()) ;
+	}
+	
 	@Test(expected=IllegalArgumentException.class,timeout=1000)
 	public void testWrongArguments() {
 			Util.updateProductPrices(null, null) ;

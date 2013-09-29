@@ -109,7 +109,7 @@ public class Util {
 			updateIfNeed(currentList,iter) ;
 		}
 
-		
+		//Map -> List
 		List <ProductPrice> result = new LinkedList<>() ;
 		for(String firstIter : dbMap.keySet()){
 			for( Integer secondIter : dbMap.get(firstIter).keySet() ){
@@ -202,6 +202,7 @@ public class Util {
 				}
 				
 				listToRemove.add(dbPrice) ;
+				setToAdd.add(newPrice) ;
 			}else{
 				//   /----x----/			db price
 				//      /----x----/			new price
